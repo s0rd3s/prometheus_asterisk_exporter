@@ -1,0 +1,29 @@
+[Unit]
+Description=Asterisk Prometheus Metrics Exporter
+After=network.target
+Requires=asterisk.service
+
+[Service]
+Type=simple
+User=asterisk_user
+Group=asterisk_group
+WorkingDirectory=/var/run/asterisk_exporter
+ExecStart=/usr/bin/python3 /usr/local/bin/asterisk_exporter.py
+Restart=always
+RestartSec=5s
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/var/run/asterisk /var/run/asterisk_exporter
+ReadOnlyPaths=/usr/sbin/asterisk
+CapabilityBoundingSet=
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target
